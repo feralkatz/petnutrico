@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--
+            El producto "Suscripción mensual - Comida Perro 6kg" ya se marcó
+            como recurring_invoice=True en demo/product_demo.xml. Aquí se
+            crea el plan recurrente "Mensual" al que debe asociarse desde el
+            formulario del producto (pestaña Ventas → Plan de Suscripción),
+            ya que sale.subscription.plan no se referencia directamente
+            desde product.template por un campo simple en todas las
+            versiones — verifícalo en tu instancia al instalar.
+        -->
+        <record id="subscription_plan_mensual" model="sale.subscription.plan">
+            <field name="name">Mensual</field>
+            <field name="billing_period_value">1</field>
+            <field name="billing_period_unit">month</field>
+        </record>
+
+    </data>
+</odoo>

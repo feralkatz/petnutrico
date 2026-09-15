@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="orderpoint_perro_30kg" model="stock.warehouse.orderpoint">
+            <field name="name">Mínimo Comida Perro 30kg - Puebla</field>
+            <field name="warehouse_id" ref="stock.warehouse0"/>
+            <field name="location_id" ref="location_perro"/>
+            <field name="product_id" ref="product_comida_perro_30kg"/>
+            <field name="product_min_qty">300</field>
+            <field name="product_max_qty">600</field>
+        </record>
+
+        <record id="orderpoint_perro_6kg" model="stock.warehouse.orderpoint">
+            <field name="name">Mínimo Comida Perro 6kg - Puebla</field>
+            <field name="warehouse_id" ref="stock.warehouse0"/>
+            <field name="location_id" ref="location_perro"/>
+            <field name="product_id" ref="product_comida_perro_6kg"/>
+            <field name="product_min_qty">300</field>
+            <field name="product_max_qty">600</field>
+        </record>
+
+        <record id="orderpoint_gato_30kg" model="stock.warehouse.orderpoint">
+            <field name="name">Mínimo Comida Gato 30kg - Puebla</field>
+            <field name="warehouse_id" ref="stock.warehouse0"/>
+            <field name="location_id" ref="location_gato"/>
+            <field name="product_id" ref="product_comida_gato_30kg"/>
+            <field name="product_min_qty">300</field>
+            <field name="product_max_qty">600</field>
+        </record>
+
+        <record id="orderpoint_gato_6kg" model="stock.warehouse.orderpoint">
+            <field name="name">Mínimo Comida Gato 6kg - Puebla</field>
+            <field name="warehouse_id" ref="stock.warehouse0"/>
+            <field name="location_id" ref="location_gato"/>
+            <field name="product_id" ref="product_comida_gato_6kg"/>
+            <field name="product_min_qty">300</field>
+            <field name="product_max_qty">600</field>
+        </record>
+
+    </data>
+</odoo>

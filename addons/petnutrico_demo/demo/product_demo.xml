@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================
+             Categoría de producto (para activar caducidad a nivel categoría)
+             ============================================================ -->
+        <record id="product_category_alimento" model="product.category">
+            <field name="name">Alimento para mascotas</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+
+        <!-- ============================================================
+             Proveedores (para poder comparar precio de materia prima)
+             ============================================================ -->
+        <record id="partner_proveedor_agroinsumos" model="res.partner">
+            <field name="name">Agroinsumos del Bajío</field>
+            <field name="company_type">company</field>
+            <field name="is_company">True</field>
+            <field name="supplier_rank">1</field>
+            <field name="country_id" ref="base.mx"/>
+        </record>
+
+        <record id="partner_proveedor_nutrimx" model="res.partner">
+            <field name="name">NutriMx Ingredientes</field>
+            <field name="company_type">company</field>
+            <field name="is_company">True</field>
+            <field name="supplier_rank">1</field>
+            <field name="country_id" ref="base.mx"/>
+        </record>
+
+        <!-- ============================================================
+             Materias primas
+             ============================================================ -->
+        <record id="product_harina_pollo" model="product.product">
+            <field name="name">Harina de pollo</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+            <field name="seller_ids" eval="[
+                (0, 0, {'partner_id': ref('partner_proveedor_agroinsumos'), 'price': 18.50, 'min_qty': 100}),
+                (0, 0, {'partner_id': ref('partner_proveedor_nutrimx'), 'price': 17.20, 'min_qty': 100}),
+            ]"/>
+        </record>
+
+        <record id="product_harina_maiz" model="product.product">
+            <field name="name">Harina de maíz</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+            <field name="seller_ids" eval="[
+                (0, 0, {'partner_id': ref('partner_proveedor_agroinsumos'), 'price': 6.80, 'min_qty': 200}),
+                (0, 0, {'partner_id': ref('partner_proveedor_nutrimx'), 'price': 7.10, 'min_qty': 200}),
+            ]"/>
+        </record>
+
+        <record id="product_grasa_animal" model="product.product">
+            <field name="name">Grasa animal</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+            <field name="seller_ids" eval="[
+                (0, 0, {'partner_id': ref('partner_proveedor_nutrimx'), 'price': 12.00, 'min_qty': 50}),
+            ]"/>
+        </record>
+
+        <record id="product_premix_vitaminas" model="product.product">
+            <field name="name">Premix vitaminas y minerales</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+            <field name="seller_ids" eval="[
+                (0, 0, {'partner_id': ref('partner_proveedor_agroinsumos'), 'price': 45.00, 'min_qty': 10}),
+            ]"/>
+        </record>
+
+        <record id="product_costal_30kg" model="product.product">
+            <field name="name">Costal / bulto 30kg (empaque)</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="seller_ids" eval="[
+                (0, 0, {'partner_id': ref('partner_proveedor_agroinsumos'), 'price': 8.00, 'min_qty': 500}),
+            ]"/>
+        </record>
+
+        <record id="product_costal_6kg" model="product.product">
+            <field name="name">Costal / bulto 6kg (empaque)</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="seller_ids" eval="[
+                (0, 0, {'partner_id': ref('partner_proveedor_agroinsumos'), 'price': 4.50, 'min_qty': 500}),
+            ]"/>
+        </record>
+
+        <!-- ============================================================
+             Productos terminados
+             Nota de diseño: en vez de modelar "Presentación" (30kg/6kg) como
+             un atributo de producto con variantes, se declaran 4 productos
+             independientes. Los IDs de variante que Odoo genera al usar
+             atributos no son estables para referenciarlos desde XML, así
+             que para un módulo reproducible es más robusto declarar 4
+             product.product explícitos. Cada uno tiene su propia BoM,
+             regla de reabastecimiento y punto de calidad.
+
+             Se usa el modelo product.product (no product.template) porque
+             es el patrón que usa el propio Odoo en su demo data: al crear
+             un product.product con un external ID propio, Odoo crea el
+             product.template asociado automáticamente y le asigna un
+             external ID derivado con el sufijo "_product_template" (p.ej.
+             product_comida_perro_30kg_product_template), que es el que se
+             usa para referenciarlo desde mrp.bom.
+             ============================================================ -->
+        <record id="product_comida_perro_30kg" model="product.product">
+            <field name="name">Comida para Perro 30kg</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="tracking">lot</field>
+            <field name="use_expiration_date">True</field>
+            <field name="expiration_time">180</field>
+            <field name="alert_time">30</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="list_price">850.00</field>
+        </record>
+
+        <record id="product_comida_perro_6kg" model="product.product">
+            <field name="name">Comida para Perro 6kg</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="tracking">lot</field>
+            <field name="use_expiration_date">True</field>
+            <field name="expiration_time">180</field>
+            <field name="alert_time">30</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="list_price">210.00</field>
+        </record>
+
+        <record id="product_comida_gato_30kg" model="product.product">
+            <field name="name">Comida para Gato 30kg</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="tracking">lot</field>
+            <field name="use_expiration_date">True</field>
+            <field name="expiration_time">180</field>
+            <field name="alert_time">30</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="list_price">920.00</field>
+        </record>
+
+        <record id="product_comida_gato_6kg" model="product.product">
+            <field name="name">Comida para Gato 6kg</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="tracking">lot</field>
+            <field name="use_expiration_date">True</field>
+            <field name="expiration_time">180</field>
+            <field name="alert_time">30</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="list_price">230.00</field>
+        </record>
+
+        <!-- ============================================================
+             Producto de suscripción para clientes de e-commerce
+             (envío + cobro mensual)
+             ============================================================ -->
+        <record id="product_suscripcion_mensual_perro_6kg" model="product.product">
+            <field name="name">Suscripción mensual - Comida Perro 6kg</field>
+            <field name="type">service</field>
+            <field name="recurring_invoice">True</field>
+            <field name="categ_id" ref="product_category_alimento"/>
+            <field name="list_price">210.00</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--
+            OJO: no se fija test_type_id aquí. El campo existe (es un
+            Many2one a un modelo de "tipo de test": pass-fail, medir, tomar
+            foto, etc.), pero no pude confirmar con certeza el external ID
+            exacto de "Pass - Fail" para 19.0 sin acceso a tu instancia, y
+            prefiero no inventarlo. Al instalar el módulo, entra al punto de
+            control y en el campo "Tipo" selecciona "Pass - Fail"
+            manualmente (es la opción estándar para verificar textura/olor
+            sin necesidad de capturar una medida numérica).
+        -->
+        <record id="quality_point_comida_perro" model="quality.point">
+            <field name="title">Control de calidad - Comida Perro</field>
+            <field name="product_ids" eval="[(6, 0, [
+                ref('product_comida_perro_30kg'),
+                ref('product_comida_perro_6kg'),
+            ])]"/>
+            <field name="picking_type_ids" eval="[(6, 0, [ref('mrp.picking_type_manufacturing')])]"/>
+            <field name="note">Verificar textura, olor y ausencia de contaminantes antes de liberar el lote a almacén. Configurar Tipo = "Pass - Fail" manualmente.</field>
+        </record>
+
+        <record id="quality_point_comida_gato" model="quality.point">
+            <field name="title">Control de calidad - Comida Gato</field>
+            <field name="product_ids" eval="[(6, 0, [
+                ref('product_comida_gato_30kg'),
+                ref('product_comida_gato_6kg'),
+            ])]"/>
+            <field name="picking_type_ids" eval="[(6, 0, [ref('mrp.picking_type_manufacturing')])]"/>
+            <field name="note">Verificar textura, olor y ausencia de contaminantes antes de liberar el lote a almacén. Configurar Tipo = "Pass - Fail" manualmente.</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--
+            El almacén por defecto (stock.warehouse0) ya existe desde que se
+            crea la empresa. Lo renombramos como "Puebla" en vez de crear uno
+            nuevo, para no terminar con un almacén huérfano sin usar.
+        -->
+        <record id="stock.warehouse0" model="stock.warehouse">
+            <field name="name">Puebla (Planta)</field>
+            <field name="code">PUE</field>
+        </record>
+
+        <record id="warehouse_cdmx" model="stock.warehouse">
+            <field name="name">CDMX (Almacén)</field>
+            <field name="code">CDMX</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="warehouse_guadalajara" model="stock.warehouse">
+            <field name="name">Guadalajara (Almacén)</field>
+            <field name="code">GDL</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!--
+            Ubicaciones internas por tipo de producto, dentro del almacén de
+            Puebla (donde ocurre la fabricación). Se agregan como hijas de la
+            ubicación de stock del almacén.
+        -->
+        <record id="location_perro" model="stock.location">
+            <field name="name">Comida Perro</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+
+        <record id="location_gato" model="stock.location">
+            <field name="name">Comida Gato</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+
+    </data>
+</odoo>
